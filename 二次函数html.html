@@ -1,0 +1,202 @@
+<html>
+	<head>
+		<meta charset = "utf-8">
+		<title>二次函数</title>
+		<style>
+			* { margin: 0; }
+			body{
+				display:flex;
+				flex-direction:column;
+				justify-content:center;
+				flex-wrap:wrap;
+				align-items:center;
+			}
+			form{
+				width:30%;height:30%;
+				display:flex;
+				align-items:center;
+				flex-direction:column;
+				justify-content:center;
+			}
+			#col1 {
+				
+				display:flex;
+				flex-wrap:wrap;
+				align-items: center;
+				gap:5px;
+			}
+			.fraction {
+				display: inline-flex;    
+				flex-direction: column;  
+				align-items: center;     
+			}
+			[type="text"] {
+				width: 2em;
+				text-align: center;      
+			}
+			.fraction p {
+				margin:2px;
+				border-top: 1px solid black; 
+				width: 100%;            
+				text-align: center;
+			}
+			#cul {
+				margin-top: 20px;
+				
+			}
+			#ans {
+   
+				margin-top: 10px;
+				border-style: groove;
+				width:30%;
+				height:5em
+			}
+		</style>
+	</head>
+	<script>
+		function gcd(a, b) {
+			while (b !== 0) {
+				let temp = b;
+				b = a % b;
+				a = temp;
+			}
+        return a;
+		}
+		function calculate(){
+			var a1 = parseInt(document.getElementById("a1").value);
+			var a2 = parseInt(document.getElementById("a2").value);
+			var b1 = parseInt(document.getElementById("b1").value);
+			var b2 = parseInt(document.getElementById("b2").value);
+			var c1 = parseInt(document.getElementById("c1").value);
+			var c2 = parseInt(document.getElementById("c2").value);
+			if(a2==0||b2==0||c2==0){
+				window.alert("分母不可为0！！")
+				return ""
+			}
+			document.getElementById("ans").innerHTML ="";
+			var ansst = "";
+			var b2_4ac1 = (b1 ** 2) * a2 * c2- 4 * a1 * c1 * (b2**2);
+			var b2_4ac2 = (b2 ** 2) * a2 * c2;
+			var t = gcd(b2_4ac1,b2_4ac2);
+			b2_4ac1=b2_4ac1 / t;
+			b2_4ac2=b2_4ac2 / t;
+			var n2=parseInt(b2_4ac2);
+			var n1=parseInt(b2_4ac1 * b2_4ac2);
+			var n1_1=1;
+			var n1_2=n1;
+			var x=Math.abs(n1);
+			x=parseInt(x**0.5)
+			for (var i=0;i<x;i++){
+				t=n1-i;
+				if (t ** 2 <= n1){
+					if(n1 % (t**2) == 0){
+						n1_1=t;
+						n1_2=parseInt(n1 / t**2);
+						break;
+					}
+				}
+				}
+			var m1=-1*b1;
+			var m2 = b2;
+			var p1 = a1 * 2;
+			var p2 = a2;
+			var m = m1 * n2 * p2;
+			var n = n1_1 * m2 * p2;
+			var p = p1 * n2 * m2;
+			
+			t = gcd(gcd(m,n),p);
+			m=parseInt(m / t);
+			n=parseInt(n / t);
+			p=parseInt(p / t);
+			
+			if (n1_2 < 0) {
+				ansst = "无解";
+			} else if (n1_2 > 0) {
+				if (n1_2 !== 1) {
+					if (n !== 1) {
+						ansst += `${m.toString().padStart(2)} ±${n.toString().padStart(2)}√${n1_2.toString().padEnd(4)}<br>`;
+						wid = 15;
+					} else {
+						ansst += `${m.toString().padStart(2)}±√${n1_2.toString().padEnd(2)}<br>`;
+						wid = 11;
+					}
+					if (p !== 1) {
+						ansst += ("-".repeat(wid) + "<br>");
+					ansst += `${p.toString().padStart(wid/2+1)}<br>`;
+					}
+				} else {
+					let a1 = m + n;
+					let a2 = m - n;
+					let gcd1 = gcd(a1, p);
+					let gcd2 = gcd(a2, p);
+					a1 = parseInt(a1 / gcd1);
+					p1 = parseInt(p / gcd1);
+					a2 = parseInt(a2 / gcd2);
+					p2 = parseInt(p / gcd2);
+
+					if (p1 === 1) {
+						if (p2 === 1) {
+							ansst += `${a1}或${a2}<br>`;
+						} else {
+							ansst += "    ".concat(`${a2.toString().padStart(3)}<br>`);
+							ansst += `${a1.toString()}或----<br>`;
+							ansst += "    ".concat(`${p2.toString().padStart(3)}<br>`);
+						}
+					} else {
+						if (p2 !== 1) {
+							ansst += ` ${a1.toString().padStart(3, ' ')} ${a2.toString().padStart(3, ' ').padEnd(8, ' ')}` + "<br>";
+							ansst += "-".repeat(4) + "或" + "-".repeat(4) + "<br>";
+							ansst += ` ${p1.toString().padStart(3, ' ')} ${p2.toString().padStart(3, ' ').padEnd(8, ' ')}` + "<br>";
+						} else {
+							ansst += " ".repeat(6) + a1.toString().padStart(3, ' ')+ "<br>";
+							ansst += a2.toString().padStart(4, ' ') + "或" + "-".repeat(4) + "<br>";
+							ansst += " ".repeat(6) + p1.toString().padStart(3, ' ')+ "<br>";
+						}
+					}
+				}
+				}
+			else if (n1_2 === 0) {
+				t=gcd(m, p);
+				m = parseInt(m / t);
+				p = parseInt(p / t);
+				if (p == 1) {
+					ansst += m.toString();
+				} else {
+					ansst += `${m}<br>-<br> ${p}`;
+				}
+			}
+		document.getElementById("ans").innerHTML = ansst;
+		}
+	</script>
+	<body>
+		<form>
+			<div id = "col1">
+				<!-- a -->
+				<div class="fraction">
+					<input id="a1" type="text" value="0">
+					<p></p>
+					<input id="a2" type="text" value="1">
+				</div>
+				<span id="x2">x²+</span> 
+				
+				<!-- b -->
+				<div class="fraction">
+					<input id="b1" type="text" value="0">
+					<p></p>
+					<input id="b2" type="text" value="1">
+				</div>
+				<span id="x1">x+</span>
+				
+				<!-- c-->
+				<div class="fraction">
+					<input id="c1" type="text" value="0">
+					<p></p>
+					<input id="c2" type="text" value="1">
+				</div>
+				<span id="x0">=0</span>
+			</div>
+			<button id="cul" type="button" onclick="calculate()">calculate</button>
+		</form>
+		<pre id="ans"></pre >
+	</body>
+</html>
