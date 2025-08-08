@@ -75,6 +75,29 @@
 			}
 			document.getElementById("ans").innerHTML ="";
 			var ansst = "";
+						//非二次方程处理
+			if(a1==0){
+				if(b1==0){
+					document.getElementById("ans").innerHTML = "任意实数";
+					return ""
+				}
+				else{
+					var ans1 = c1*b2;
+					var ans2 = c2*b1;
+					var t = gcd(ans1,ans2);
+					ans1 = parseInt(ans1 / t*-1);
+					ans2 = parseInt(ans2 / t);
+					if(ans2==1){
+						document.getElementById("ans").innerHTML = ans1;
+						return ""
+					}
+					else{
+						document.getElementById("ans").innerHTML = ans1.toString()+"<br>"+"----"+"<br>"+ans2.toString();
+						return ""
+					}
+				}
+			}
+			//二次方程
 			var b2_4ac1 = (b1 ** 2) * a2 * c2- 4 * a1 * c1 * (b2**2);
 			var b2_4ac2 = (b2 ** 2) * a2 * c2;
 			var t = gcd(b2_4ac1,b2_4ac2);
@@ -85,9 +108,9 @@
 			var n1_1=1;
 			var n1_2=n1;
 			var x=Math.abs(n1);
-			x=parseInt(x**0.5)
+			x=parseInt(x**0.5+1)
 			for (var i=0;i<x;i++){
-				t=n1-i;
+				t=-i;
 				if (t ** 2 <= n1){
 					if(n1 % (t**2) == 0){
 						n1_1=t;
@@ -200,3 +223,4 @@
 		<pre id="ans"></pre >
 	</body>
 </html>
+
