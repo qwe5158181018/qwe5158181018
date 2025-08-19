@@ -87,6 +87,8 @@
 					var t = gcd(ans1,ans2);
 					ans1 = parseInt(ans1 / t*-1);
 					ans2 = parseInt(ans2 / t);
+					if(ans1*ans2 > 0){ans1 = Math.abs(ans1);ans2 = Math.abs(ans2)}
+					else{ans1 = -1*Math.abs(ans1);ans2 = Math.abs(ans2)}
 					if(ans2==1){
 						document.getElementById("ans").innerHTML = ans1;
 						return ""
@@ -226,6 +228,7 @@
 		<pre id="ans"></pre >
 	</body>
 </html>
+
 
 
 
